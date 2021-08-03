@@ -12,9 +12,9 @@ Dataset<- read_csv("Seleted dataset/Dataset_GoogleAnalytics .csv",
 View(Dataset)
 
 ######## clean the data and remove symbols from the rows and leave only numbers and characters
-Dataset$Revenue <- substr(Dataset$Revenue, 2, 1000000L) # subset numerical characters beginning from 2nd string and take out $ sign
-Dataset$`Ecommerce Conversion Rate` <- substr(Dataset$`Ecommerce Conversion Rate`, 1, 4) # retains 1st to 4th characters and leaveout % sign
-Dataset$`Bounce Rate` <- substr(Dataset$`Bounce Rate`, 1, 4) # retains 1st to 4th characters and leaveout % sign
+Dataset$Revenue <- substring(Dataset$Revenue, first = 2) # subset characters beginning from 2nd string to take out $ sign
+Dataset$`Ecommerce Conversion Rate` <- substr(Dataset$`Ecommerce Conversion Rate`, 1, nchar(Dataset$`Ecommerce Conversion Rate`) - 1) # retains 1st to 4th characters and leaveout % sign
+Dataset$`Bounce Rate` <- substr(Dataset$`Bounce Rate`, 1, nchar(Dataset$`Bounce Rate`) - 1) # retains 1st to 4th characters and leaveout % sign
 View(Dataset)
 ########
 
@@ -48,10 +48,8 @@ filter_char8_last2 <- substring(filter_char8$`Day Index`, first = nchar(filter_c
 filter_char8Re <- mutate(filter_char8, fill_char8Date = paste0(filter_char8_first6, "20", filter_char8_last2)) #create col and concatenate strings into it to form Date
 colnames(filter_char8Re)[10] <- "Date" ## rename col as Date
 
-
 View(filter_char8)
 View(filter_char8Re)
-##########################
 
 ################ Formating Day Index col with 8 characters into Date format ####################
 filter_char10 <- filter(Dataset, nchar(Dataset$`Day Index`) == 10) ## filter Day Index col with 10 strings
@@ -62,6 +60,4 @@ Complete_Dataset <- bind_rows(filter_char7Re, filter_char8Re, filter_char10) ## 
 View(Complete_Dataset)
 
 #### Exporting dataset as csv
-write.csv(Complete_Dataset, file = "Users\\lin\\Downloads\\R_shiny_app_GoogleTrends\\complete_clean_Dataset.csv")
-
-View(filter_char10)
+write_csv(Complete_Dataset, file = "Users\\lin\\Downloads\\R_shiny_app_GoogleTrends\\GA_clean_Dataset.csv")
