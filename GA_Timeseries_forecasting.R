@@ -146,3 +146,8 @@ h <- 5
 income <- rep(4, h)
 
 income
+
+usertype_data_union%>%
+  select(Year, Month, New_Users_Revenue) %>%
+  filter(Year == 2017 & Month == "May")
+
